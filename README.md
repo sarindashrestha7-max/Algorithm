@@ -1,5 +1,4 @@
 # Algorithm (QUIZ 6)
-You can directly write this for your submission bro:
 
 ---
 
