@@ -1,0 +1,48 @@
+class Solution {
+public:
+
+    int findCheapestPrice(int n,
+                          vector<vector<int>>& flights,
+                          int src,
+                          int dst,
+                          int k) {
+
+        // store cheapest price to each city
+        vector<int> price(n, 1e9);
+
+        // source city cost is 0
+        price[src] = 0;
+
+        // repeat k+1 times
+        for (int i = 0; i <= k; i++) {
+
+            // copy old prices
+            vector<int> temp = price;
+
+            // check every flight
+            for (auto f : flights) {
+
+                int from = f[0];
+                int to = f[1];
+                int cost = f[2];
+
+                // skip unreachable city
+                if (price[from] == 1e9)
+                    continue;
+
+                // found cheaper path
+                temp[to] = min(temp[to],
+                               price[from] + cost);
+            }
+
+            // update prices
+            price = temp;
+        }
+
+        // destination unreachable
+        if (price[dst] == 1e9)
+            return -1;
+
+        return price[dst];
+    }
+};
