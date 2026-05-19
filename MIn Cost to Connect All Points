@@ -1,0 +1,52 @@
+class Solution {
+public:
+    int minCostConnectPoints(vector<vector<int>>& points) {
+        // n stores the total number of points
+        int n = points.size();
+
+        // minDist[i] stores the cheapest cost to connect point i
+        vector<int> minDist(n, INT_MAX);
+
+        // visited[i] tells if point i is already connected
+        vector<bool> visited(n, false);
+
+        // Start from point 0, so its cost is 0
+        minDist[0] = 0;
+
+        // answer stores the total minimum cost
+        int answer = 0;
+
+        // Repeat until all points are connected
+        for (int i = 0; i < n; i++) {
+            int u = -1;
+
+            // Find the unvisited point with the smallest connection cost
+            for (int j = 0; j < n; j++) {
+                if (!visited[j] && (u == -1 || minDist[j] < minDist[u])) {
+                    u = j;
+                }
+            }
+
+            // Mark this point as connected
+            visited[u] = true;
+
+            // Add its minimum connection cost to the answer
+            answer += minDist[u];
+
+            // Update the cost to connect all other unvisited points
+            for (int v = 0; v < n; v++) {
+                // Manhattan distance between point u and point v
+                int cost = abs(points[u][0] - points[v][0]) +
+                           abs(points[u][1] - points[v][1]);
+
+                // If this is a cheaper way to connect point v, update it
+                if (!visited[v] && cost < minDist[v]) {
+                    minDist[v] = cost;
+                }
+            }
+        }
+
+        // Return the minimum total cost to connect all points
+        return answer;
+    }
+};
